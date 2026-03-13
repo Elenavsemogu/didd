@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiDD — Dog in Double Despair</title>
+    <meta name="description" content="Dog in Double Despair — единственная международная группа России из Санкт-Петербурга. Punk-Blues / Post-Hardcore.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0a0a0a;
+            --surface: #111;
+            --text: #e8e8e8;
+            --text2: #777;
+            --accent: #c41e1e;
+            --accent2: #ff3333;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        a { color: var(--text); text-decoration: none; }
+
+        /* ── Header ── */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 32px;
+            background: rgba(10,10,10,0.9); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .header-logo {
+            font-family: 'Space Mono', monospace; font-size: 20px; font-weight: 700;
+            letter-spacing: 4px; text-transform: uppercase;
+        }
+        .header-logo span { color: var(--accent); }
+        .header-socials { display: flex; gap: 16px; align-items: center; }
+        .header-socials a { opacity: 0.6; transition: opacity 0.2s; }
+        .header-socials a:hover { opacity: 1; }
+        .header-socials svg { width: 20px; height: 20px; fill: var(--text); }
+
+        .burger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; z-index: 101; }
+        .burger span { display: block; width: 24px; height: 2px; background: var(--text); transition: all 0.3s; }
+        .burger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .burger.open span:nth-child(2) { opacity: 0; }
+        .burger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        .nav-overlay {
+            position: fixed; inset: 0; z-index: 99;
+            background: rgba(10,10,10,0.97); backdrop-filter: blur(20px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s;
+        }
+        .nav-overlay.open { opacity: 1; pointer-events: all; }
+        .nav-overlay a {
+            font-family: 'Space Mono', monospace; font-size: 32px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 6px; opacity: 0.6;
+            transition: all 0.3s; position: relative;
+        }
+        .nav-overlay a:hover { opacity: 1; color: var(--accent2); }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+            padding: 120px 24px 60px; position: relative;
+        }
+        .hero-album {
+            width: min(380px, 80vw); aspect-ratio: auto;
+            border-radius: 4px; box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            transition: transform 0.4s;
+        }
+        .hero-album:hover { transform: scale(1.02); }
+        .hero-title {
+            font-family: 'Space Mono', monospace; font-size: clamp(14px, 3vw, 20px);
+            letter-spacing: 6px; text-transform: uppercase; margin-top: 32px;
+            color: var(--text2);
+        }
+        .hero-album-name {
+            font-family: 'Space Mono', monospace; font-size: clamp(24px, 5vw, 42px);
+            font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+            margin-top: 8px;
+        }
+        .hero-btn {
+            display: inline-block; margin-top: 28px; padding: 14px 40px;
+            background: var(--accent); color: #fff; font-family: 'Space Mono', monospace;
+            font-size: 14px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+            border: none; cursor: pointer; transition: all 0.3s; border-radius: 2px;
+        }
+        .hero-btn:hover { background: var(--accent2); transform: translateY(-2px); }
+        .hero-sub {
+            font-size: 12px; color: var(--text2); margin-top: 12px;
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+
+        /* ── Shotgun interlude ── */
+        .shotgun-section {
+            height: 80vh; display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        .shotgun-wrap {
+            font-size: 120px; transition: transform 0.1s linear;
+            filter: drop-shadow(0 0 40px rgba(196, 30, 30, 0.3));
+            user-select: none;
+        }
+        .shotgun-svg { width: 300px; height: auto; }
+        .muzzle-flash {
+            position: absolute; width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(255,80,20,0.8) 0%, rgba(255,30,0,0.4) 30%, transparent 70%);
+            border-radius: 50%; opacity: 0; pointer-events: none;
+            transition: opacity 0.1s;
+        }
+        .muzzle-flash.fire { opacity: 1; animation: flash 0.3s ease-out; }
+        @keyframes flash { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(2); opacity: 0; } }
+
+        /* ── Tracklist ── */
+        .tracklist-section {
+            padding: 100px 24px; max-width: 700px; margin: 0 auto;
+        }
+        .section-label {
+            font-family: 'Space Mono', monospace; font-size: 12px;
+            letter-spacing: 4px; text-transform: uppercase; color: var(--accent);
+            margin-bottom: 8px;
+        }
+        .section-title {
+            font-family: 'Space Mono', monospace; font-size: clamp(22px, 4vw, 36px);
+            font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+            margin-bottom: 40px;
+        }
+        .track {
+            display: flex; align-items: center; gap: 16px;
+            padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.2s;
+        }
+        .track:hover { padding-left: 8px; border-bottom-color: var(--accent); }
+        .track-num {
+            font-family: 'Space Mono', monospace; font-size: 14px;
+            color: var(--text2); width: 32px; flex-shrink: 0;
+        }
+        .track-name { font-size: 16px; font-weight: 400; }
+        .presave-btn {
+            display: inline-block; margin-top: 40px; padding: 12px 32px;
+            border: 1px solid var(--accent); color: var(--accent);
+            font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
+            letter-spacing: 3px; text-transform: uppercase; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .presave-btn:hover { background: var(--accent); color: #fff; }
+
+        /* ── About ── */
+        .about-section {
+            padding: 120px 24px; display: flex; gap: 48px;
+            max-width: 1000px; margin: 0 auto; align-items: center;
+        }
+        @media (max-width: 768px) { .about-section { flex-direction: column; } }
+        .about-photo {
+            width: 360px; flex-shrink: 0; border-radius: 4px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+        }
+        @media (max-width: 768px) { .about-photo { width: 100%; max-width: 360px; } }
+        .about-text p {
+            font-size: 17px; line-height: 1.8; color: var(--text);
+            margin-bottom: 16px;
+        }
+        .about-text p:last-child { color: var(--text2); font-size: 15px; }
+
+        /* ── Releases ── */
+        .releases-section {
+            padding: 100px 24px; max-width: 1100px; margin: 0 auto;
+        }
+        .releases-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px; margin-top: 16px;
+        }
+        .release-card {
+            background: var(--surface); border-radius: 4px; overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .release-card:hover { transform: translateY(-4px); }
+        .release-cover { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+        .release-info { padding: 16px; }
+        .release-title { font-family: 'Space Mono', monospace; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .release-year { font-size: 12px; color: var(--text2); margin-top: 4px; }
+        .release-type { font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
+
+        /* ── Merch ── */
+        .merch-section {
+            padding: 100px 24px; text-align: center; max-width: 700px; margin: 0 auto;
+        }
+        .merch-empty {
+            padding: 60px 24px; border: 1px dashed rgba(255,255,255,0.1);
+            border-radius: 4px; margin-top: 24px;
+        }
+        .merch-empty p { color: var(--text2); font-size: 15px; }
+
+        /* ── Footer ── */
+        .footer {
+            padding: 48px 24px; text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 60px;
+        }
+        .footer-contact {
+            font-size: 13px; color: var(--text2); letter-spacing: 1px;
+        }
+        .footer-contact a { color: var(--accent); }
+        .footer-copy {
+            font-size: 11px; color: rgba(255,255,255,0.2); margin-top: 16px;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <a href="#home" class="header-logo">Di<span>DD</span></a>
+    <div class="header-socials">
+        <a href="#" title="Instagram" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="#" title="Telegram" aria-label="Telegram">
+            <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        </a>
+    </div>
+    <div class="burger" id="burger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+    </div>
+</header>
+
+<!-- Nav overlay -->
+<nav class="nav-overlay" id="navOverlay">
+    <a href="#home" onclick="toggleMenu()">Home</a>
+    <a href="#about" onclick="toggleMenu()">About</a>
+    <a href="#releases" onclick="toggleMenu()">Releases</a>
+    <a href="#merch" onclick="toggleMenu()">Merch</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="home">
+    <img src="album-cover-web.jpg" alt="DiDD — New Album" class="hero-album">
+    <div class="hero-title">Dog in Double Despair</div>
+    <div class="hero-album-name">New Album — May 2026</div>
+    <a href="#presave" class="hero-btn">Pre-save</a>
+    <div class="hero-sub">Coming soon on all platforms</div>
+</section>
+
+<!-- Shotgun interlude -->
+<section class="shotgun-section" id="shotgun">
+    <div class="shotgun-wrap" id="shotgunWrap">
+        <svg class="shotgun-svg" viewBox="0 0 400 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Double barrel shotgun -->
+            <rect x="10" y="45" width="280" height="12" rx="2" fill="#888"/>
+            <rect x="10" y="63" width="280" height="12" rx="2" fill="#777"/>
+            <!-- Barrels -->
+            <rect x="290" y="43" width="100" height="14" rx="3" fill="#999"/>
+            <rect x="290" y="61" width="100" height="14" rx="3" fill="#888"/>
+            <circle cx="390" cy="50" r="5" fill="#555"/>
+            <circle cx="390" cy="68" r="5" fill="#555"/>
+            <!-- Stock -->
+            <path d="M10 42 Q-10 58 10 78 L40 78 L40 42 Z" fill="#5a3a20"/>
+            <path d="M15 46 Q2 58 15 74 L35 74 L35 46 Z" fill="#6b4423"/>
+            <!-- Trigger guard -->
+            <path d="M60 78 Q65 95 75 95 Q85 95 85 78" stroke="#666" stroke-width="2" fill="none"/>
+            <!-- Trigger -->
+            <rect x="72" y="78" width="3" height="10" rx="1" fill="#888"/>
+            <!-- Barrel details -->
+            <line x1="150" y1="44" x2="150" y2="76" stroke="#555" stroke-width="1"/>
+            <line x1="200" y1="44" x2="200" y2="76" stroke="#555" stroke-width="1"/>
+        </svg>
+    </div>
+    <div class="muzzle-flash" id="muzzleFlash"></div>
+</section>
+
+<!-- Tracklist -->
+<section class="tracklist-section" id="presave">
+    <div class="section-label">Upcoming album</div>
+    <div class="section-title">Tracklist</div>
+    <div class="track"><span class="track-num">01</span><span class="track-name">TBA</span></div>
+    <div class="track"><span class="track-num">02</span><span class="track-name">TBA</span></div>
+    <div class="track"><span class="track-num">03</span><span class="track-name">TBA</span></div>
+    <div class="track"><span class="track-num">04</span><span class="track-name">TBA</span></div>
+    <div class="track"><span class="track-num">05</span><span class="track-name">TBA</span></div>
+    <div class="track"><span class="track-num">06</span><span class="track-name">TBA</span></div>
+    <div class="track"><span class="track-num">07</span><span class="track-name">TBA</span></div>
+    <div class="track"><span class="track-num">08</span><span class="track-name">TBA</span></div>
+    <a href="#" class="presave-btn">Pre-save on Spotify</a>
+</section>
+
+<!-- About -->
+<section class="about-section" id="about">
+    <img src="band-photo-2.jpg" alt="DiDD band" class="about-photo">
+    <div class="about-text">
+        <div class="section-label">About</div>
+        <div class="section-title" style="margin-bottom:24px;">Dog in Double Despair</div>
+        <p>Dog in Double Despair — это единственная международная группа России из Санкт-Петербурга. В составе — четверо нейроотличных музыкантов, работающих на стыке австралийского Punk-Blues'а и американского Post-Hardcore.</p>
+        <p>Фронтмен группы — пропавший много лет назад внук Хэнка Уильямса, культового кантри-музыканта из Америки.</p>
+    </div>
+</section>
+
+<!-- Releases -->
+<section class="releases-section" id="releases">
+    <div class="section-label">Discography</div>
+    <div class="section-title">Releases</div>
+    <div class="releases-grid">
+        <div class="release-card">
+            <img src="album-cover-alt.jpg" alt="New Album" class="release-cover">
+            <div class="release-info">
+                <div class="release-type">Album</div>
+                <div class="release-title">TBA</div>
+                <div class="release-year">May 2026 (pre-save)</div>
+            </div>
+        </div>
+        <div class="release-card" style="opacity:0.5;">
+            <div style="width:100%;aspect-ratio:1;background:#1a1a1a;display:flex;align-items:center;justify-content:center;color:#333;font-family:'Space Mono',monospace;font-size:48px;">?</div>
+            <div class="release-info">
+                <div class="release-type">Single</div>
+                <div class="release-title">Coming soon</div>
+                <div class="release-year">2026</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Merch -->
+<section class="merch-section" id="merch">
+    <div class="section-label">Store</div>
+    <div class="section-title">Merch</div>
+    <div class="merch-empty">
+        <p>Coming soon</p>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-contact">
+        По всем вопросам — <a href="mailto:contact@didd.band">contact@didd.band</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 Dog in Double Despair</div>
+</footer>
+
+<script>
+function toggleMenu() {
+    document.getElementById('burger').classList.toggle('open');
+    document.getElementById('navOverlay').classList.toggle('open');
+    document.body.style.overflow = document.getElementById('navOverlay').classList.contains('open') ? 'hidden' : '';
+}
+
+/* Shotgun rotation on scroll */
+const shotgunWrap = document.getElementById('shotgunWrap');
+const muzzleFlash = document.getElementById('muzzleFlash');
+const shotgunSection = document.getElementById('shotgun');
+let lastScrollY = 0;
+let shotAngle = 0;
+let fireTimeout = null;
+
+window.addEventListener('scroll', () => {
+    const rect = shotgunSection.getBoundingClientRect();
+    const visible = rect.top < window.innerHeight && rect.bottom > 0;
+    if (!visible) return;
+
+    const scrollDelta = window.scrollY - lastScrollY;
+    shotAngle += scrollDelta * 0.8;
+    shotgunWrap.style.transform = `rotate(${shotAngle}deg)`;
+
+    if (Math.abs(scrollDelta) > 15) {
+        fireShotgun();
+    }
+    lastScrollY = window.scrollY;
+});
+
+function fireShotgun() {
+    if (fireTimeout) return;
+    const rect = shotgunWrap.getBoundingClientRect();
+    const rad = (shotAngle % 360) * Math.PI / 180;
+    muzzleFlash.style.left = (rect.left + rect.width/2 + Math.cos(rad) * 150 - 100) + 'px';
+    muzzleFlash.style.top = (rect.top + rect.height/2 + Math.sin(rad) * 150 - 100) + 'px';
+    muzzleFlash.classList.add('fire');
+    fireTimeout = setTimeout(() => {
+        muzzleFlash.classList.remove('fire');
+        fireTimeout = null;
+    }, 300);
+}
+</script>
+</body>
+</html>
