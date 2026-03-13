@@ -40,9 +40,8 @@
             position:relative;overflow:hidden;
         }
         .prv .mercury{
-            position:absolute;inset:5%;
-            border:4px solid;
-            border-image:linear-gradient(140deg,#999 0%,#555 20%,#bbb 40%,#666 60%,#aaa 80%,#777 100%) 1;
+            position:absolute;inset:0;width:100%;height:100%;
+            object-fit:fill;pointer-events:none;z-index:10;
         }
         .prv .shell-img{position:absolute;object-fit:contain;mix-blend-mode:lighten}
         .prv .qr-img{position:absolute;object-fit:contain;mix-blend-mode:lighten}
@@ -161,7 +160,7 @@
             </ul>
         </div>
         <div class="prv pa">
-            <div class="mercury"></div>
+            <img src="mercury-frame.png" class="mercury" alt="">
             <div class="top-txt"><div class="alb">Hope You Never<br>Meet Each Other</div></div>
             <img src="shell.png" class="shell-img" alt="DiDD shell">
             <div class="bot-txt">
@@ -186,7 +185,7 @@
             </ul>
         </div>
         <div class="prv pb">
-            <div class="mercury"></div>
+            <img src="mercury-frame.png" class="mercury" alt="">
             <div class="left">
                 <div class="alb">Hope You<br>Never Meet<br>Each Other</div>
                 <div class="trk">Cab Driver</div>
@@ -212,7 +211,7 @@
             </ul>
         </div>
         <div class="prv pc">
-            <div class="mercury"></div>
+            <img src="mercury-frame.png" class="mercury" alt="">
             <img src="shell.png" class="shell-img" alt="DiDD shell">
             <div class="band-top">
                 <div class="alb">Hope You Never Meet Each Other</div>
@@ -241,7 +240,7 @@
             </ul>
         </div>
         <div class="prv pd">
-            <div class="mercury"></div>
+            <img src="mercury-frame.png" class="mercury" alt="">
             <img src="shell.png" class="shell-img" alt="DiDD shell">
             <div class="big">
                 <div class="alb">Hope You Never<br>Meet Each Other</div>
