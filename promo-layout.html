@@ -8,328 +8,249 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=Oswald:wght@700&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        body{background:#111;color:#e5e5e5;font-family:'Inter',sans-serif}
-        .page-title{
-            text-align:center;padding:48px 24px 12px;
-            font-family:'Space Mono',monospace;font-size:11px;
-            color:#666;letter-spacing:4px;text-transform:uppercase;
-        }
-        .page-sub{
-            text-align:center;padding:0 24px 40px;font-size:13px;color:#444;max-width:600px;margin:0 auto;line-height:1.6;
-        }
-        .ref{
-            max-width:500px;margin:0 auto 60px;text-align:center;
-            border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:24px;background:#0a0a0a;
-        }
-        .ref img{width:100%;max-width:400px;border-radius:4px}
-        .ref-label{font-size:11px;color:#c41e1e;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
+        body{background:#0e0e0e;color:#e5e5e5;font-family:'Inter',sans-serif}
 
-        .proposals{display:flex;flex-direction:column;gap:80px;padding:0 24px 80px;max-width:1200px;margin:0 auto}
+        .page-hdr{text-align:center;padding:56px 24px 12px;font-family:'Space Mono',monospace;font-size:11px;color:#555;letter-spacing:4px;text-transform:uppercase}
+        .page-sub{text-align:center;padding:0 24px 48px;font-size:13px;color:#3a3a3a;max-width:620px;margin:0 auto;line-height:1.7}
 
-        .proposal{
+        .ref-block{
+            max-width:440px;margin:0 auto 72px;text-align:center;
+            border:1px solid rgba(255,255,255,.05);border-radius:6px;padding:20px;background:#0a0a0a;
+        }
+        .ref-block img{width:100%;max-width:380px;border-radius:3px}
+        .ref-lbl{font-size:10px;color:#c41e1e;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px}
+
+        .layouts{display:flex;flex-direction:column;gap:100px;padding:0 20px 100px;max-width:1100px;margin:0 auto}
+
+        .layout-row{
             display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;
-            border:1px solid rgba(255,255,255,.04);border-radius:8px;padding:32px;background:#0d0d0d;
         }
-        @media(max-width:900px){.proposal{grid-template-columns:1fr}}
+        @media(max-width:860px){.layout-row{grid-template-columns:1fr}}
 
-        .proposal-num{
-            font-family:'Space Mono',monospace;font-size:11px;
-            color:#c41e1e;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;
-        }
-        .proposal-title{
-            font-family:'Space Mono',monospace;font-size:18px;font-weight:700;
-            text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;
-        }
-        .proposal-desc{font-size:14px;color:#888;line-height:1.7;margin-bottom:20px}
-        .proposal-notes{font-size:12px;color:#555;line-height:1.6}
-        .proposal-notes li{margin-bottom:4px}
+        .layout-info .num{font-family:'Space Mono',monospace;font-size:10px;color:#c41e1e;letter-spacing:4px;text-transform:uppercase;margin-bottom:12px}
+        .layout-info .name{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+        .layout-info .desc{font-size:14px;color:#777;line-height:1.75;margin-bottom:18px}
+        .layout-info ul{list-style:none;padding:0}
+        .layout-info li{font-size:12px;color:#555;line-height:1.7;padding-left:14px;position:relative}
+        .layout-info li::before{content:'—';position:absolute;left:0;color:#c41e1e}
 
-        /* Layout previews */
-        .preview{
-            aspect-ratio:1;background:#1a1a1a;border-radius:4px;
+        /* Previews */
+        .prv{
+            width:100%;aspect-ratio:1;background:#0a0a0a;border-radius:4px;
             position:relative;overflow:hidden;
-            display:flex;align-items:center;justify-content:center;
         }
-        .preview .frame{
-            position:absolute;inset:8%;
-            border:3px solid;border-image:linear-gradient(135deg,#aaa,#666,#ccc,#555) 1;
-            border-radius:2px;
+        .prv .mercury{
+            position:absolute;inset:5%;
+            border:4px solid;
+            border-image:linear-gradient(140deg,#999 0%,#555 20%,#bbb 40%,#666 60%,#aaa 80%,#777 100%) 1;
         }
+        .prv .shell-img{position:absolute;object-fit:contain;filter:drop-shadow(0 8px 24px rgba(0,0,0,.6))}
+        .prv .qr-img{position:absolute;object-fit:contain}
 
-        /* ── Layout A: Classic Center ── */
-        .la .shell-area{
-            position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-20deg);
-            width:40%;height:60%;
-            background:linear-gradient(145deg,#b91c1c 0%,#7f1d1d 100%);
-            border-radius:6px;
-            box-shadow:0 8px 30px rgba(0,0,0,.5);
-        }
-        .la .shell-label{
-            position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-            font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:rgba(0,0,0,.3);
-            letter-spacing:4px;
-        }
-        .la .top-text{
-            position:absolute;top:12%;left:50%;transform:translateX(-50%);
+        /* ── A: Classic Center ── */
+        .pa .shell-img{width:32%;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-22deg)}
+        .pa .top-txt{
+            position:absolute;top:9%;left:50%;transform:translateX(-50%);
             text-align:center;width:80%;
         }
-        .la .top-text .album{
-            font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#e5e5e5;
-            text-transform:uppercase;line-height:1.1;
+        .pa .top-txt .alb{
+            font-family:'Bebas Neue',sans-serif;font-size:clamp(16px,3.5vw,26px);
+            letter-spacing:3px;color:#e5e5e5;text-transform:uppercase;line-height:1.1;
         }
-        .la .bottom-text{
+        .pa .bot-txt{
             position:absolute;bottom:12%;left:50%;transform:translateX(-50%);
-            text-align:center;width:80%;
+            text-align:center;width:75%;
         }
-        .la .bottom-text .track{
-            font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:#e5e5e5;
-            text-transform:uppercase;letter-spacing:2px;
+        .pa .bot-txt .trk{
+            font-family:'Space Mono',monospace;font-size:clamp(11px,2vw,15px);font-weight:700;
+            color:#e5e5e5;text-transform:uppercase;letter-spacing:3px;
         }
-        .la .bottom-text .streaming{
-            font-size:10px;color:#888;letter-spacing:2px;text-transform:uppercase;margin-top:4px;
+        .pa .bot-txt .str{font-size:clamp(8px,1.2vw,10px);color:#666;letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+        .pa .qr-img{width:14%;bottom:10%;right:10%;border-radius:2px}
+
+        /* ── B: Asymmetric Left ── */
+        .pb .shell-img{width:36%;top:12%;right:6%;transform:rotate(-18deg)}
+        .pb .left{position:absolute;top:12%;left:10%;width:42%}
+        .pb .left .alb{
+            font-family:'Bebas Neue',sans-serif;font-size:clamp(18px,4vw,32px);
+            color:#e5e5e5;letter-spacing:2px;text-transform:uppercase;line-height:1.05;
         }
-        .la .qr{
-            position:absolute;bottom:14%;right:14%;width:50px;height:50px;
-            background:#c41e1e;border-radius:2px;display:flex;align-items:center;justify-content:center;
-            font-size:8px;color:rgba(0,0,0,.4);font-weight:700;
+        .pb .left .trk{
+            font-family:'Space Mono',monospace;font-size:clamp(10px,1.6vw,13px);font-weight:700;
+            color:#c41e1e;letter-spacing:3px;text-transform:uppercase;margin-top:14px;
+        }
+        .pb .left .str{font-size:clamp(7px,1vw,9px);color:#555;letter-spacing:2px;text-transform:uppercase;margin-top:6px}
+        .pb .qr-img{width:16%;bottom:10%;left:10%;border-radius:2px}
+        .pb .qr-lbl{
+            position:absolute;bottom:12%;left:calc(10% + 18%);
+            font-size:clamp(7px,1vw,9px);color:#444;letter-spacing:1px;text-transform:uppercase;
         }
 
-        /* ── Layout B: Asymmetric Left ── */
-        .lb .shell-area{
-            position:absolute;top:15%;right:10%;width:35%;height:55%;
-            background:linear-gradient(145deg,#b91c1c,#7f1d1d);border-radius:6px;
-            transform:rotate(-15deg);
-            box-shadow:0 8px 30px rgba(0,0,0,.5);
-        }
-        .lb .shell-label{
-            position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-            font-family:'Space Mono',monospace;font-size:16px;font-weight:700;color:rgba(0,0,0,.3);letter-spacing:3px;
-        }
-        .lb .left-stack{
-            position:absolute;top:12%;left:10%;width:45%;
-        }
-        .lb .left-stack .album{
-            font-family:'Bebas Neue',sans-serif;font-size:28px;color:#e5e5e5;
-            letter-spacing:2px;text-transform:uppercase;line-height:1.05;
-        }
-        .lb .left-stack .track{
-            font-family:'Space Mono',monospace;font-size:12px;font-weight:700;
-            color:#c41e1e;letter-spacing:2px;text-transform:uppercase;margin-top:12px;
-        }
-        .lb .left-stack .streaming{
-            font-size:10px;color:#666;letter-spacing:1px;text-transform:uppercase;margin-top:6px;
-        }
-        .lb .qr{
-            position:absolute;bottom:12%;left:10%;width:60px;height:60px;
-            background:#c41e1e;border-radius:2px;display:flex;align-items:center;justify-content:center;
-            font-size:8px;color:rgba(0,0,0,.4);font-weight:700;
-        }
-        .lb .qr-label{
-            position:absolute;bottom:14%;left:calc(10% + 68px);font-size:9px;color:#555;
-            letter-spacing:1px;
-        }
-
-        /* ── Layout C: Horizontal Band ── */
-        .lc .shell-area{
-            position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);
-            width:30%;height:50%;
-            background:linear-gradient(145deg,#b91c1c,#7f1d1d);border-radius:6px;
-            box-shadow:0 8px 30px rgba(0,0,0,.5);
-        }
-        .lc .shell-label{
-            position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-            font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:rgba(0,0,0,.3);letter-spacing:3px;
-        }
-        .lc .top-band{
-            position:absolute;top:0;left:0;right:0;padding:16px 20px;
-            background:rgba(0,0,0,.6);backdrop-filter:blur(8px);
+        /* ── C: Cinema Bands ── */
+        .pc .shell-img{width:26%;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-28deg)}
+        .pc .band-top{
+            position:absolute;top:0;left:5%;right:5%;padding:14px 16px;
+            background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
             display:flex;justify-content:space-between;align-items:center;
         }
-        .lc .top-band .album{
-            font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;
+        .pc .band-top .alb{
+            font-family:'Oswald',sans-serif;font-size:clamp(10px,2vw,16px);font-weight:700;
             color:#e5e5e5;text-transform:uppercase;letter-spacing:2px;
         }
-        .lc .top-band .track{
-            font-family:'Space Mono',monospace;font-size:11px;color:#c41e1e;
-            letter-spacing:2px;text-transform:uppercase;
+        .pc .band-top .trk{
+            font-family:'Space Mono',monospace;font-size:clamp(8px,1.3vw,11px);
+            color:#c41e1e;letter-spacing:2px;text-transform:uppercase;
         }
-        .lc .bottom-band{
-            position:absolute;bottom:0;left:0;right:0;padding:14px 20px;
-            background:rgba(0,0,0,.6);backdrop-filter:blur(8px);
+        .pc .band-bot{
+            position:absolute;bottom:0;left:5%;right:5%;padding:12px 16px;
+            background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
             display:flex;justify-content:space-between;align-items:center;
         }
-        .lc .bottom-band .streaming{
-            font-size:9px;color:#666;letter-spacing:2px;text-transform:uppercase;
-        }
-        .lc .qr{
-            width:36px;height:36px;background:#c41e1e;border-radius:2px;
-            display:flex;align-items:center;justify-content:center;
-            font-size:7px;color:rgba(0,0,0,.4);font-weight:700;
-        }
+        .pc .band-bot .str{font-size:clamp(7px,1vw,9px);color:#555;letter-spacing:2px;text-transform:uppercase}
+        .pc .qr-img{width:10%;border-radius:2px;position:static}
+        .pc .band-bot .inside{font-size:clamp(6px,.8vw,8px);color:#333;letter-spacing:1px;text-transform:uppercase}
 
-        /* ── Layout D: Full-bleed, text overlay ── */
-        .ld{background:#0f0f0f}
-        .ld .shell-area{
-            position:absolute;inset:0;
-            background:radial-gradient(ellipse at 55% 45%, rgba(185,28,28,.15) 0%, transparent 60%);
+        /* ── D: Poster / Big Type ── */
+        .pd{background:radial-gradient(ellipse at 50% 35%,rgba(185,28,28,.08) 0%,#0a0a0a 55%)}
+        .pd .shell-img{width:24%;top:8%;left:50%;transform:translateX(-50%) rotate(-25deg)}
+        .pd .big{
+            position:absolute;bottom:14%;left:50%;transform:translateX(-50%);
+            text-align:center;width:88%;
         }
-        .ld .center-shell{
-            position:absolute;top:30%;left:50%;transform:translate(-50%,-50%) rotate(-25deg);
-            width:28%;height:45%;
-            background:linear-gradient(145deg,#b91c1c,#7f1d1d);border-radius:6px;
-            box-shadow:0 12px 40px rgba(185,28,28,.2);
+        .pd .big .alb{
+            font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,5.5vw,42px);
+            color:#e5e5e5;letter-spacing:5px;text-transform:uppercase;line-height:1;
         }
-        .ld .center-shell .lbl{
-            position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-            font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:rgba(0,0,0,.3);letter-spacing:3px;
+        .pd .big .line{width:50px;height:1px;background:#c41e1e;margin:10px auto}
+        .pd .big .trk{
+            font-family:'Space Mono',monospace;font-size:clamp(9px,1.4vw,12px);
+            color:#c41e1e;letter-spacing:4px;text-transform:uppercase;
         }
-        .ld .big-text{
-            position:absolute;bottom:18%;left:50%;transform:translateX(-50%);
-            text-align:center;width:85%;
-        }
-        .ld .big-text .album{
-            font-family:'Bebas Neue',sans-serif;font-size:36px;color:#e5e5e5;
-            letter-spacing:6px;text-transform:uppercase;line-height:1;
-        }
-        .ld .big-text .divider{
-            width:60px;height:1px;background:#c41e1e;margin:10px auto;
-        }
-        .ld .big-text .track{
-            font-family:'Space Mono',monospace;font-size:11px;color:#c41e1e;
-            letter-spacing:3px;text-transform:uppercase;
-        }
-        .ld .big-text .streaming{
-            font-size:9px;color:#555;margin-top:6px;letter-spacing:2px;text-transform:uppercase;
-        }
-        .ld .qr{
-            position:absolute;bottom:6%;right:8%;width:44px;height:44px;
-            background:#c41e1e;border-radius:2px;display:flex;align-items:center;justify-content:center;
-            font-size:7px;color:rgba(0,0,0,.4);font-weight:700;
-        }
-        .ld .corner-info{
-            position:absolute;bottom:7%;left:8%;font-size:8px;color:#444;
-            letter-spacing:1px;text-transform:uppercase;
+        .pd .big .str{font-size:clamp(7px,1vw,9px);color:#444;margin-top:5px;letter-spacing:2px;text-transform:uppercase}
+        .pd .qr-img{width:12%;bottom:6%;right:8%;border-radius:2px}
+        .pd .corner{
+            position:absolute;bottom:7%;left:8%;
+            font-size:clamp(6px,.9vw,8px);color:#333;letter-spacing:1px;text-transform:uppercase;
         }
     </style>
 </head>
 <body>
 
-<div class="page-title">Promo Layout — Предложения по дизайну</div>
-<p class="page-sub">4 варианта расположения элементов для промо-картинки сингла/альбома в ртутной рамке. Элементы: обложка-патрон DiDD, название альбома, название трека, QR-код, подпись "on all streaming services".</p>
+<div class="page-hdr">Promo Layout — варианты дизайна</div>
+<p class="page-sub">4 варианта расположения элементов: патрон DiDD, название альбома, трек, QR-код. Все превью используют реальные ассеты.</p>
 
-<div class="ref">
-    <div class="ref-label">Оригинал Антона (референс)</div>
+<div class="ref-block">
+    <div class="ref-lbl">Оригинал Антона (референс)</div>
     <img src="band-photo-2.jpg" alt="Original promo by Anton">
 </div>
 
-<div class="proposals">
+<div class="layouts">
 
     <!-- A: Classic Center -->
-    <div class="proposal">
-        <div>
-            <div class="proposal-num">Layout A</div>
-            <div class="proposal-title">Classic Center</div>
-            <div class="proposal-desc">Патрон по центру под углом. Название альбома сверху, трек + QR снизу. Чистая симметрия, всё читается сразу.</div>
-            <ul class="proposal-notes">
-                <li>Название альбома — крупно сверху по центру</li>
-                <li>Патрон — центр композиции, наклон ~20°</li>
-                <li>Название трека — под патроном</li>
-                <li>QR-код — правый нижний угол</li>
-                <li>"On all streaming services" — мелко под треком</li>
+    <div class="layout-row">
+        <div class="layout-info">
+            <div class="num">Layout A</div>
+            <div class="name">Classic Center</div>
+            <div class="desc">Патрон в центре под углом. Название альбома крупно сверху, трек и QR снизу. Чистая симметрия, всё читается моментально.</div>
+            <ul>
+                <li>Название альбома — крупно, по центру сверху</li>
+                <li>Патрон — центр композиции, наклон ~22°</li>
+                <li>Трек "Cab Driver" — под патроном</li>
+                <li>QR — правый нижний угол, компактно</li>
+                <li>"On all streaming services" — мелко</li>
             </ul>
         </div>
-        <div class="preview la">
-            <div class="frame"></div>
-            <div class="top-text">
-                <div class="album">Hope You Never<br>Meet Each Other</div>
+        <div class="prv pa">
+            <div class="mercury"></div>
+            <div class="top-txt"><div class="alb">Hope You Never<br>Meet Each Other</div></div>
+            <img src="shell.png" class="shell-img" alt="DiDD shell">
+            <div class="bot-txt">
+                <div class="trk">Cab Driver</div>
+                <div class="str">On all streaming services</div>
             </div>
-            <div class="shell-area"><div class="shell-label">DiDD</div></div>
-            <div class="bottom-text">
-                <div class="track">Cab Driver</div>
-                <div class="streaming">On all streaming services</div>
-            </div>
-            <div class="qr">QR</div>
+            <img src="qr.png" class="qr-img" alt="QR">
         </div>
     </div>
 
     <!-- B: Asymmetric Left -->
-    <div class="proposal">
-        <div>
-            <div class="proposal-num">Layout B</div>
-            <div class="proposal-title">Asymmetric Stack</div>
-            <div class="proposal-desc">Текст слева стопкой (альбом → трек → стриминг), патрон справа крупно. QR внизу слева с пояснением. Динамичная асимметрия.</div>
-            <ul class="proposal-notes">
-                <li>Левый столбец: крупный заголовок альбома, трек красным, стриминг серым</li>
+    <div class="layout-row">
+        <div class="layout-info">
+            <div class="num">Layout B</div>
+            <div class="name">Asymmetric Stack</div>
+            <div class="desc">Текст стопкой слева (альбом крупно → трек красным → стриминг), патрон справа. QR внизу слева с пояснением. Динамичная асимметрия, как постер.</div>
+            <ul>
+                <li>Левый столбец: заголовок альбома крупным Bebas Neue</li>
+                <li>Трек красным моноширинным</li>
                 <li>Патрон — справа, занимает ~40% площади</li>
-                <li>QR — крупнее, внизу слева с меткой "Scan to listen"</li>
-                <li>Больше воздуха между элементами</li>
+                <li>QR — внизу слева с меткой "Scan to listen"</li>
             </ul>
         </div>
-        <div class="preview lb">
-            <div class="frame"></div>
-            <div class="left-stack">
-                <div class="album">Hope You<br>Never Meet<br>Each Other</div>
-                <div class="track">Cab Driver</div>
-                <div class="streaming">On all streaming services</div>
+        <div class="prv pb">
+            <div class="mercury"></div>
+            <div class="left">
+                <div class="alb">Hope You<br>Never Meet<br>Each Other</div>
+                <div class="trk">Cab Driver</div>
+                <div class="str">On all streaming services</div>
             </div>
-            <div class="shell-area"><div class="shell-label">DiDD</div></div>
-            <div class="qr">QR</div>
-            <div class="qr-label">Scan to listen</div>
+            <img src="shell.png" class="shell-img" alt="DiDD shell">
+            <img src="qr.png" class="qr-img" alt="QR">
+            <div class="qr-lbl">Scan to listen</div>
         </div>
     </div>
 
-    <!-- C: Horizontal Bands -->
-    <div class="proposal">
-        <div>
-            <div class="proposal-num">Layout C</div>
-            <div class="proposal-title">Cinema Bands</div>
-            <div class="proposal-desc">Патрон в центре чисто. Инфо в полупрозрачных полосах сверху и снизу как титры в кино. Минималистично, вся рамка видна.</div>
-            <ul class="proposal-notes">
-                <li>Верхняя полоса: название альбома слева, трек справа</li>
-                <li>Патрон — чистый центр, максимально виден</li>
-                <li>Нижняя полоса: стриминг слева, QR справа</li>
-                <li>Полосы полупрозрачные с размытием</li>
+    <!-- C: Cinema Bands -->
+    <div class="layout-row">
+        <div class="layout-info">
+            <div class="num">Layout C</div>
+            <div class="name">Cinema Bands</div>
+            <div class="desc">Патрон чисто в центре. Инфо в полупрозрачных полосах сверху и снизу как субтитры. Минимализм — рамка и патрон максимально на виду.</div>
+            <ul>
+                <li>Верхняя полоса: название альбома + трек</li>
+                <li>Патрон — чистый центр, без помех</li>
+                <li>Нижняя полоса: стриминг + QR + "inside the box"</li>
+                <li>Полупрозрачный фон с размытием</li>
             </ul>
         </div>
-        <div class="preview lc">
-            <div class="frame"></div>
-            <div class="shell-area"><div class="shell-label">DiDD</div></div>
-            <div class="top-band">
-                <div class="album">Hope You Never Meet Each Other</div>
-                <div class="track">Cab Driver</div>
+        <div class="prv pc">
+            <div class="mercury"></div>
+            <img src="shell.png" class="shell-img" alt="DiDD shell">
+            <div class="band-top">
+                <div class="alb">Hope You Never Meet Each Other</div>
+                <div class="trk">Cab Driver</div>
             </div>
-            <div class="bottom-band">
-                <div class="streaming">On all streaming services</div>
-                <div class="qr">QR</div>
+            <div class="band-bot">
+                <div class="str">On all streaming services</div>
+                <img src="qr.png" class="qr-img" alt="QR">
+                <div class="inside">Inside the box: dummy round, 1 pc.</div>
             </div>
         </div>
     </div>
 
-    <!-- D: Full Bleed -->
-    <div class="proposal">
-        <div>
-            <div class="proposal-num">Layout D</div>
-            <div class="proposal-title">Poster Style</div>
-            <div class="proposal-desc">Патрон сверху-центр, вся типографика крупным блоком внизу. Как плакат для концерта — дерзко, читаемо издалека.</div>
-            <ul class="proposal-notes">
-                <li>Патрон — верхняя треть, слегка наклонён, свечение красным</li>
-                <li>Нижний блок: название альбома огромным шрифтом</li>
+    <!-- D: Poster Big Type -->
+    <div class="layout-row">
+        <div class="layout-info">
+            <div class="num">Layout D</div>
+            <div class="name">Poster Style</div>
+            <div class="desc">Патрон вверху по центру со свечением. Вся типографика крупным блоком внизу, как концертный плакат. Дерзко, читается издалека.</div>
+            <ul>
+                <li>Патрон — верхняя треть, красное свечение</li>
+                <li>Название альбома — огромный шрифт внизу</li>
                 <li>Красная линия-разделитель</li>
                 <li>Трек и стриминг мелко под линией</li>
-                <li>QR правый нижний, метка "inside the box" левый нижний</li>
+                <li>QR правый нижний, "inside the box" левый нижний</li>
             </ul>
         </div>
-        <div class="preview ld">
-            <div class="shell-area"></div>
-            <div class="center-shell"><div class="lbl">DiDD</div></div>
-            <div class="big-text">
-                <div class="album">Hope You Never<br>Meet Each Other</div>
-                <div class="divider"></div>
-                <div class="track">Cab Driver</div>
-                <div class="streaming">On all streaming services</div>
+        <div class="prv pd">
+            <div class="mercury"></div>
+            <img src="shell.png" class="shell-img" alt="DiDD shell">
+            <div class="big">
+                <div class="alb">Hope You Never<br>Meet Each Other</div>
+                <div class="line"></div>
+                <div class="trk">Cab Driver</div>
+                <div class="str">On all streaming services</div>
             </div>
-            <div class="qr">QR</div>
-            <div class="corner-info">Inside the box: dummy round, 1 pc.</div>
+            <img src="qr.png" class="qr-img" alt="QR">
+            <div class="corner">Inside the box: dummy round, 1 pc.</div>
         </div>
     </div>
 
